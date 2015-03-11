@@ -1,0 +1,57 @@
+#pragma config(Sensor, S1,     sonarSensor,         sensorSONAR)
+
+
+task main()
+{
+	int counter = 0;
+
+	int start_to_block1 = 0;
+	int start_to_block2 = 0;
+
+	while(SensorValue[sonarSensor] < 150)
+	{
+		for(counter = 0; counter <5; counter++)
+			{
+
+
+				nMotorEncoder[motorB] = 0;
+				nMotorEncoder[motorC] = 0;
+
+				nMotorEncoderTarget[motorB] = 3600;
+				nMotorEncoderTarget[motorC] = 3600;
+
+				motor[motorB] = 15;
+				motor[motorC] = -15;
+				wait1Msec(2600);
+
+				nMotorEncoder[motorB] = 0;
+				nMotorEncoder[motorC] = 0;
+
+				nMotorEncoderTarget[motorB] = 3600;
+				nMotorEncoderTarget[motorC] = 3600;
+
+				motor[motorB] = -15;
+				motor[motorC] = 15;
+				wait1Msec(2600);
+
+				if(SensorValue[sonarSensor] < 150)
+					{
+						nMotorEncoder[motorB] = 0;
+						nMotorEncoder[motorC] = 0;
+
+						nMotorEncoderTarget[motorB] = 0;
+						nMotorEncoderTarget[motorC] = 0;
+
+						motor[motorB] = 0;
+						motor[motorC] = 0;
+						wait1Msec(1000);
+
+						start_to_block1 = SensorValue[sonarSensor];
+						PlaySound(soundShortBlip);
+					}
+
+}
+
+
+}
+}
