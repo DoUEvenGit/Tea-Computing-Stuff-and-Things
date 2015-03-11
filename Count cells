@@ -1,0 +1,26 @@
+task main()
+{
+		int count = 0 ;
+		int 
+
+		while(SensorValue(touchSensor) == 0)
+		{
+				if(SensorValue[lightSensor] > 45)
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+				}
+				else
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+						count ++ ;
+				}
+		}
+
+		motor[motorC] = 0 ;
+		motor[motorB] = 0 ;
+
+		nxtDisplayBigStringAt( 0, 31, "%d", count );
+		wait1Msec(5000);
+}
