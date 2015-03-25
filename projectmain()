@@ -1,0 +1,56 @@
+#pragma config(Sensor, S1,     sonar,          sensorSONAR)
+#pragma config(Sensor, S2,     touch,          sensorTouch)
+#pragma config(Sensor, S3,     light,          sensorLightActive)
+#pragma config(Sensor, S4,     sound,          sensorSoundDB)
+
+task main()
+{
+int counti,countj,turncounter,grid[9][7],objcount,o,objects[2];
+o=turncounter=counti=countj=objcount=0;
+
+		while(objcount!=2)
+		{
+
+			if(turncounter!=1)
+			{
+				if(SensorValue[light] > 45)
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+				}
+				else
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+						counti++;
+						PlaySound(soundShortBlip);
+				}//end of else
+			}//end of if
+
+			else
+			{
+				if(SensorValue[light] > 45)
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+				}
+				else
+				{
+						motor[motorC] = 50 ;
+						motor[motorB] = 50 ;
+						countj ++ ;
+						PlaySound(soundShortBlip);
+				}//end of else
+			}//end of else
+
+			if(touch==1)
+			{
+				objects[o]=grid[counti][countj];
+				o++;
+				objcount++;
+			}
+		}//end while
+
+		motor[motorC] = 0 ;
+		motor[motorB] = 0 ;
+}
