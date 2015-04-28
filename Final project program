@@ -1,0 +1,179 @@
+#pragma config(Sensor, S1,     sonar,          sensorSONAR)
+#pragma config(Sensor, S2,     touch,          sensorTouch)
+#pragma config(Sensor, S3,     light,          sensorLightActive)
+#pragma config(Sensor, S4,     sound,          sensorSoundDB)
+
+//function prototypes
+void turn_right(void);
+void turn_left(void);
+void start_check(void);
+void navigate(void);
+void return_to_start(int,int);
+void nearest(int, int, int ,int);
+
+task main()
+{
+    navigate();
+}//end task main()		
+
+void turn_left()     
+{        
+    nMotorEncoder[motorB]= 0;
+    nMotorEncoder[motorC]= 0;
+
+    nMotorEncoderTarget[motorB]= 168;
+    nMotorEncoderTarget[motorC]= -168;
+
+    motor[motorB] = 20;
+    motor[motorC] =-20;
+
+    while(nMotorRunState[motorC] != runStateIdle)
+    {
+
+    }
+
+    motor[motorB] =0;
+    motor[motorC] =0;
+}//end turnleft
+
+void turn_right()
+{
+    //reseting motor encoder
+    nMotorEncoder[motorB]= 0;
+    nMotorEncoder[motorC]= 0;
+    
+    //seting motor encoder target
+    nMotorEncoderTarget[motorB]= -168;
+    nMotorEncoderTarget[motorC]= 168;
+
+    motor[motorB] = 20;
+    motor[motorC] =-20;
+
+    while(nMotorRunState[motorC] != runStateIdle)
+    {
+
+    }
+
+    motor[motorB] =0;
+    motor[motorC] =0;
+}//end turnright
+
+void start_check()
+{
+	if(sonar<20)
+	{
+		turn_left();
+		forward();
+		turn_right();
+   }//end if
+
+  else
+	{
+        motor[motorB] =50;
+    	motor[motorC] =50;
+    	wait1Msec(300);
+	}//end else
+}//end start_check
+
+void forward()
+{
+    motor[motorB]=50;
+    motor[motorC]=50;		
+    wait1Msec(100);	
+}//end forward
+
+
+void return_to_start(counti,countj)
+{
+	turn_right();
+	if(counti<9)
+	{
+		navigate();
+	}//end if
+
+	else
+	{
+		turn_right();
+		if(countj<4)
+		{
+			navigate();
+		}//end if
+	}//end else
+}//end return_to_start
+
+void nearest(object1[][1],object2[][1])
+{
+	int object1_dis, object2_dis;
+	//using pythagoreas theorem to detrimine distance of objects
+	object1_dis=object1[i]*object1[j];
+	object2_dis=object2[i]*object2[j];
+
+	if(object1_dis>object2_dis)
+	{
+        
+	}//end if
+
+	else
+	{
+	
+    }//end else
+}//end nearest
+
+void navigate()
+{
+    //declaring and intialising varaiables and arrays
+    int counti,countj,turncounter,grid[9][7],objcount,o,objects[2],object1i;
+    o=turncounter=objcount=0;
+    countj=3;
+    counti=0;
+    
+    while(objcount!=2)//keeps robot going until both objects are found
+    {
+
+        if(turncounter!=1)//checks which  way robot is facing
+        {
+            if(SensorValue[light] > 45)
+            {
+                motor[motorC] = 50 ;
+                motor[motorB] = 50 ;
+            }//end if
+
+            else
+            {
+                motor[motorC] = 50 ;
+                motor[motorB] = 50 ;
+                counti++;
+            }//end of else
+        }//end of if
+
+        else
+        {
+            if(SensorValue[light] > 45)
+            {
+                motor[motorC] = 50 ;
+                motor[motorB] = 50 ;
+            }
+			
+            else
+            {
+                motor[motorC] = 50 ;
+                motor[motorB] = 50 ;
+                countj ++ ;
+            }//end of else
+        }//end of else
+
+        if(touch==1)
+        {
+            objects[o]=grid[counti][countj];
+            o++;
+            objcount++;
+        }//end if
+    }//end while
+    if(objcount==2)
+    {
+        return_to_start();
+    }//end if
+    
+    motor[motorC] = 0;
+    motor[motorB] = 0;
+}//end navigate
